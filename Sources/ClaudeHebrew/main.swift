@@ -48,6 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
 
         webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 1200, height: 800), configuration: config)
         webView.navigationDelegate = self
+        if #available(macOS 13.3, *) { webView.isInspectable = true }
         // Identify as Safari so claude.ai doesn't block the WebView
         webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15"
         webView.load(URLRequest(url: URL(string: "https://claude.ai")!))
@@ -71,40 +72,47 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     }
 
     func hebrewScript() -> String {
-        // CSS encoded as base64 — avoids all Swift/JS quote escaping issues
-        let css = """
-            /* Input area: force RTL so Hebrew flows right-to-left */
-            textarea,
-            [contenteditable],
-            [role=textbox],
-            [data-lexical-editor] {
-                direction: rtl !important;
-                text-align: right !important;
-                unicode-bidi: plaintext !important;
-            }
-            /* Message text: force RTL, inline English words stay readable */
-            p, li, blockquote {
-                direction: rtl !important;
-                text-align: right !important;
-                unicode-bidi: embed !important;
-            }
-            /* Code blocks stay LTR */
-            code, pre {
-                direction: ltr !important;
-                text-align: left !important;
-                unicode-bidi: embed !important;
-            }
-            """
-        let b64 = Data(css.utf8).base64EncodedString()
         return """
-            (function(){
-                if (document.getElementById('claude-hebrew-rtl')) return;
-                var s = document.createElement('style');
-                s.id = 'claude-hebrew-rtl';
-                s.textContent = atob('\(b64)');
-                (document.head || document.documentElement).appendChild(s);
-            })();
-            """
+        (function(){
+            if (window.__hebrewRTLActive) return;
+            window.__hebrewRTLActive = true;
+
+            // CSS for input area
+            var s = document.createElement('style');
+            s.textContent = [
+                'textarea,[contenteditable],[role=textbox],[data-lexical-editor]{',
+                '  direction:rtl!important;text-align:right!important;unicode-bidi:plaintext!important}',
+                'code,pre,pre *{direction:ltr!important;text-align:left!important}'
+            ].join('');
+            (document.head||document.documentElement).appendChild(s);
+
+            var hebrew = /[\\u0590-\\u05FF\\uFB1D-\\uFB4F]/;
+            var skip   = /^(SCRIPT|STYLE|CODE|PRE|INPUT|TEXTAREA)$/;
+
+            function fixEl(el) {
+                if (!el || el.nodeType !== 1 || skip.test(el.tagName)) return;
+                if (hebrew.test(el.innerText || '')) {
+                    el.style.direction  = 'rtl';
+                    el.style.textAlign  = 'right';
+                }
+            }
+
+            function fixAll(root) {
+                (root||document).querySelectorAll('p,li,h1,h2,h3,h4,h5,h6,blockquote,td,div')
+                    .forEach(fixEl);
+            }
+
+            fixAll(document);
+
+            new MutationObserver(function(muts){
+                muts.forEach(function(m){
+                    m.addedNodes.forEach(function(n){
+                        if (n.nodeType === 1) fixAll(n);
+                    });
+                });
+            }).observe(document.body, {childList:true, subtree:true});
+        })();
+        """
     }
 }
 
