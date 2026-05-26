@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Claude RTL Hebrew",
+  "version": "1.0",
+  "description": "Right-to-left alignment for Hebrew in Claude Desktop",
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_end",
+    "all_frames": true
+  }]
+}

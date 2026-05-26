@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude עברית — התקנה</title>
+<style>
+  body {
+    font-family: -apple-system, sans-serif;
+    background: #f5f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    direction: rtl;
+  }
+  .card {
+    background: white;
+    border-radius: 18px;
+    padding: 40px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    text-align: right;
+  }
+  h1 { font-size: 24px; margin: 0 0 8px; color: #1d1d1f; }
+  .sub { color: #6e6e73; font-size: 15px; margin-bottom: 32px; line-height: 1.5; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .num {
+    background: #0071e3;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 15px; color: #1d1d1f; line-height: 1.5; padding-top: 2px; }
+  .btn-wrap {
+    background: #f5f5f7;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin: 28px 0;
+  }
+  .btn-wrap p { font-size: 13px; color: #6e6e73; margin: 0 0 12px; }
+  a.bookmarklet {
+    display: inline-block;
+    background: #d97706;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 980px;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(217,119,6,0.35);
+  }
+  a.bookmarklet:active { cursor: grabbing; }
+  .note {
+    background: #fff8e7;
+    border: 1px solid #f0d070;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #7a6000;
+    line-height: 1.6;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🔤 Claude עברית</h1>
+  <p class="sub">גרור את הכפתור הכתום לסרגל הסימניות של Safari — זהו. לחיצה אחת בכל ביקור ב-claude.ai מיישרת את כל העברית לימין.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div class="step-text">
+      הצג את סרגל הסימניות ב-Safari:<br>
+      <strong>תצוגה ← הצג סרגל מועדפים</strong>
+      <span style="color:#6e6e73;font-size:13px;"> (⌘ + ⇧ + B)</span>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="step-text">גרור את הכפתור הכתום למטה ישירות לסרגל הסימניות:</div>
+  </div>
+
+  <div class="btn-wrap">
+    <p>← גרור אותי לסרגל הסימניות →</p>
+    <a class="bookmarklet" href="javascript:(function(){if(document.getElementById('hrtl'))return;var s=document.createElement('style');s.id='hrtl';s.textContent='[data-lexical-editor][contenteditable=true]{direction:rtl!important;unicode-bidi:plaintext!important;text-align:right!important}[data-lexical-editor][contenteditable=true] p{direction:rtl!important;text-align:right!important} .whitespace-pre-wrap p,.whitespace-pre-wrap li,.whitespace-pre-wrap h1,.whitespace-pre-wrap h2,.whitespace-pre-wrap h3{direction:rtl!important;text-align:right!important} code,pre,pre *{direction:ltr!important;text-align:left!important}';document.head.appendChild(s);})();">🔤 Claude עברית</a>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div class="step-text">
+      עבור ל-<strong>claude.ai</strong> ולחץ על הכפתור בסרגל הסימניות — העברית תתיישר מיד לימין.
+    </div>
+  </div>
+
+  <div class="note">
+    💡 צריך ללחוץ פעם אחת בכל ביקור. הכפתור עובד רק כשאתה ב-claude.ai — לא משפיע על אתרים אחרים.
+  </div>
+</div>
+</body>
+</html>
