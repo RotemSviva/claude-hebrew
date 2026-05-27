@@ -37,18 +37,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let js = "(function(){" +
             "if(window.__hebrewRTL)return;" +
             "window.__hebrewRTL=true;" +
-            "var skip='button,a,[role=\"button\"],[role=\"menu\"],[role=\"dialog\"],[role=\"tooltip\"],[data-radix-popper-content-wrapper],[data-radix-dialog-content],[data-state]';" +
             "function fix(e){" +
                 "e.style.setProperty('direction','rtl','important');" +
                 "e.style.setProperty('text-align','right','important');" +
-            "}" +
-            "function applyRTL(root){" +
-                "var heb=/[\\u0590-\\u05FF]/;" +
-                "root.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(function(e){" +
-                    "if(e.style.direction==='rtl')return;" +
-                    "if(e.closest(skip))return;" +
-                    "if(heb.test(e.textContent||''))fix(e);" +
-                "});" +
             "}" +
             "function run(){" +
                 "var ed=document.querySelector('[data-lexical-editor][contenteditable]');" +
@@ -56,17 +47,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     "ed.style.setProperty('direction','rtl','important');" +
                     "ed.style.setProperty('unicode-bidi','plaintext','important');" +
                 "}" +
-                "applyRTL(document);" +
+                "var heb=/[\\u0590-\\u05FF]/;" +
+                "document.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(function(e){" +
+                    "if(e.style.direction==='rtl')return;" +
+                    "if(heb.test(e.textContent||''))fix(e);" +
+                "});" +
             "}" +
             "run();" +
-            "new MutationObserver(function(mutations){" +
-                "mutations.forEach(function(m){" +
-                    "m.addedNodes.forEach(function(node){" +
-                        "if(node.nodeType!==1)return;" +
-                        "if(node.closest(skip))return;" +
-                        "applyRTL(node);" +
-                    "});" +
-                "});" +
+            "var t=null;" +
+            "new MutationObserver(function(){" +
+                "clearTimeout(t);" +
+                "t=setTimeout(run,600);" +
             "}).observe(document.body,{childList:true,subtree:true});" +
         "})();"
 
