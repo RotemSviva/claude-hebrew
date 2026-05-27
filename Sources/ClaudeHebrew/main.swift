@@ -50,6 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 "var heb=/[\\u0590-\\u05FF]/;" +
                 "document.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(function(e){" +
                     "if(e.style.direction==='rtl')return;" +
+                    "if(e.closest('button,a,[role=\"button\"]'))return;" +
                     "if(heb.test(e.textContent||''))fix(e);" +
                 "});" +
             "}" +
