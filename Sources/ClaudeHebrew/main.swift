@@ -55,10 +55,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 "});" +
             "}" +
             "run();" +
-            "var t=null;" +
-            "new MutationObserver(function(){" +
-                "clearTimeout(t);" +
-                "t=setTimeout(run,600);" +
+            "new MutationObserver(function(mutations){" +
+                "mutations.forEach(function(m){" +
+                    "m.addedNodes.forEach(function(node){" +
+                        "if(node.nodeType!==1)return;" +
+                        "node.querySelectorAll('p,li,h1,h2,h3,blockquote').forEach(function(e){" +
+                            "if(e.style.direction==='rtl')return;" +
+                            "if(e.closest('button,a,[role=\"button\"]'))return;" +
+                            "if(heb.test(e.textContent||''))fix(e);" +
+                        "});" +
+                    "});" +
+                "});" +
             "}).observe(document.body,{childList:true,subtree:true});" +
         "})();"
 
