@@ -4,7 +4,7 @@ import WebKit
 let app = NSApplication.shared
 app.setActivationPolicy(.regular)
 
-class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate {
     var window: NSWindow!
     var webView: WKWebView!
 
@@ -46,6 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
 
         webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 1200, height: 800), configuration: config)
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15"
         webView.load(URLRequest(url: URL(string: "https://claude.ai/new")!))
 
@@ -60,6 +61,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         window.contentView = webView
         window.center()
         window.makeKeyAndOrderFront(nil)
+    }
+
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if let url = navigationAction.request.url {
+            NSWorkspace.shared.open(url)
+        }
+        return nil
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
