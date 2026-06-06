@@ -99,7 +99,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDe
             var t=null;
             new MutationObserver(function(){
                 clearTimeout(t);
-                t=setTimeout(run,600);
+                t=setTimeout(run,100);
             }).observe(document.body,{childList:true,subtree:true});
         })();
         """
